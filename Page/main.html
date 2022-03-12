@@ -23,10 +23,19 @@
 
     </div>
     <script>
+        function execpy(obj){
+            console.log(obj.innerHTML);
+            //document.execCommand(obj.innerHTML);
+            navigator.clipboard.writeText(obj.innerHTML)
+            obj.style.background = 'red';
+        }
         window.onload = function(){
             var slotarr = 1
             var template = $('.monster').clone();
             $('#add').click(function() {
+                if (slotarr >= 5){
+                    return;
+                }
                 console.log('append')
                 var tmp = template.clone();
                 tmp.name = 'monster'+(slotarr+1)
@@ -39,7 +48,7 @@
                     return;
                 }
                 console.log('#monster'+slotarr);
-                $('#subframe').last().remove();
+                $('#subframe').children().last().remove();
                 slotarr--;
             });
             $('#search').click(function(){
@@ -57,14 +66,19 @@
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 data: '',
                 success: function(data) {
-                    var target = $('#result')
-                    console.log(data['data'])
+                    var target = $('#result');
+                    target.empty();
+                    console.log(data['data']);
                     for(i in data['data']) {
-                        target.append("<h1>"+data['data'][i]+"</h1>")
+                        target.append("<button onclick='execpy(this)'>"+data['data'][i]+"</button>");
                     }
+                },
+                error: function(data) {
+                    $('#result').empty();
+                    alert("이름 잘못입력한듯");
                 }
                 })
-                console.log(res)
+                console.log(res);
             });
         }
     </script>

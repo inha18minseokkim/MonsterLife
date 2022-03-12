@@ -28,4 +28,6 @@ async def say_hello(arg: str):
 async def say_hello(arg: str):
     arg = unquote(arg)
     print(arg.split(','))
-    return JSONResponse({'data': asyncio.run(Filter(arg.split(',')))})
+    res = asyncio.run(Filter(arg.split(',')))
+    print(res)
+    return JSONResponse({'data': res})
