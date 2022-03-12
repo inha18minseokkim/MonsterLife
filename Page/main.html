@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>몬라 중복 검색기</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+</head>
+<body>
+    <div id="frame">
+        <h1>검색 ㄱㄱ</h1>
+        <button id="add">슬롯추가</button>
+        <button id="sbtr">슬롯삭제</button>
+        <button id="search">검색</button>
+        <div id="subframe">
+        <form action="" class="monster" name="monster1">
+            <label for="name">몹 입력 :</label>
+            <input type="text" name="name" id="name">
+        </form>
+        </div>
+    </div>
+    <div id="result">
+
+    </div>
+    <script>
+        window.onload = function(){
+            var slotarr = 1
+            var template = $('.monster').clone();
+            $('#add').click(function() {
+                console.log('append')
+                var tmp = template.clone();
+                tmp.name = 'monster'+(slotarr+1)
+                console.log(tmp.name)
+                slotarr++;
+                $('#subframe').append(tmp)
+            });
+            $('#sbtr').click(function() {
+                if (slotarr <= 1){
+                    return;
+                }
+                console.log('#monster'+slotarr);
+                $('#subframe').last().remove();
+                slotarr--;
+            });
+            $('#search').click(function(){
+                var res = ''
+                var children = $('#subframe').children()
+                for(var i = 0; i < children.length; i++){
+                    res += children[i].name.value
+                    if (i != children.length-1)
+                        res += ','
+                }
+                $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: 'http://127.0.0.1:8000/getfarmlist/'+res,
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: '',
+                success: function(data) {
+                    var target = $('#result')
+                    console.log(data['data'])
+                    for(i in data['data']) {
+                        target.append("<h1>"+data['data'][i]+"</h1>")
+                    }
+                }
+                })
+                console.log(res)
+            });
+        }
+    </script>
+</body>
+</html>
