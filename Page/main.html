@@ -25,8 +25,14 @@
     <script>
         function execpy(obj){
             console.log(obj.innerHTML);
-            //document.execCommand(obj.innerHTML);
-            navigator.clipboard.writeText(obj.innerHTML)
+	    var textArea = document.createElement("textarea");
+	    textArea.value = obj.innerHTML
+	    textArea.style.position="fixed"
+	    document.body.appendChild(textArea);
+	    textArea.focus();
+	    textArea.select();
+	    document.execCommand('copy');
+	    document.body.removeChild(textArea);
             obj.style.background = 'red';
         }
         window.onload = function(){
@@ -62,7 +68,7 @@
                 $.ajax({
                 type: 'GET',
                 dataType: 'json',
-                url: 'http://127.0.0.1:8000/getfarmlist/'+res,
+                url: 'http://3.39.85.177:80/getfarmlist/'+res,
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 data: '',
                 success: function(data) {

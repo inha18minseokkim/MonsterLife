@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
 from Filter import Filter
@@ -21,8 +21,8 @@ async def root():
 
 templates = Jinja2Templates(directory='Page')
 @app.get("/monster")
-async def say_hello(arg: str):
-    return templates.TemplateResponse("main.html")
+async def say_hello(request: Request):
+    return templates.TemplateResponse("main.html", {'request' : request})
 
 @app.get("/getfarmlist/{arg}")
 async def say_hello(arg: str):
